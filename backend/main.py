@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from typing import Optional,List
+from typing import Optional,List,Dict
 import sqlite3
 import hashlib
 from fastapi.middleware.cors import CORSMiddleware 
@@ -10,8 +10,13 @@ from fastapi.responses import Response
 import io
 from PIL import Image
 import base64
+import uuid
+import time
+import threading
 
-# create api
+global_lock=threading.Lock()
+
+#create api
 app=FastAPI()
 
 # 定義可訪問的來源(CORS)
@@ -37,7 +42,63 @@ app.add_middleware(
 # password hashing
 def new_hash(s:str)->str:
     return hashlib.sha256(s.encode()).hexdigest()
-pw=new_hash("123456")
+
+# accounts and passwords -> name : hashed_key
+accounts={
+    "Aici":new_hash("Donkey"),
+}
+
+def Aici_response():
+    with open("backend/Christmas_card_picture.jpg","rb") as f:
+        image_bytes=f.read()
+        base64_str=base64.b64encode(image_bytes).decode('utf-8')
+    with open("backend/card.html","r") as f:
+        html_text=f.read().format(base64_str)
+    return Response(
+        content=html_text,
+        media_type="text/html"
+    )
+
+responses={
+    "Aici":Aici_response(),
+}
+
+class Talking:
+    def __init__(self,id,response):
+        self.id=id
+        self.time=time.time()
+        self.response=response
+
+# uuids -> id : talking
+talkings:Dict[str,"Talking"]={}
+
+class Checker:
+    def __init__(self):
+        self.running=True
+        self.T=60
+    
+    def check(self):
+        with global_lock:
+            now=time.time()
+            vals=list(talkings.values())
+            for talking in vals:
+                if talking.time+60*5<now:
+                    del talkings[talking.id]
+
+    def execute(self):
+        while self.running:
+            self.check()
+            time.sleep(self.T)
+    
+    def start(self):
+        thread=threading.Thread(target=self.execute,daemon=True)
+        thread.start()
+    
+    def stop(self):
+        self.running=False
+
+checker=Checker()
+checker.start()
 
 @app.get("/api/")
 def home():
@@ -53,17 +114,32 @@ def get_photo():
         media_type="image/png"
     )
 
-@app.get("/api/get_card/")
-def get_card():
-    with open("backend/Christmas_card_picture.jpg","rb") as f:
-        image_bytes=f.read()
-        base64_str=base64.b64encode(image_bytes).decode('utf-8')
-    with open("backend/card.html","r") as f:
-        html_text=f.read().format(base64_str)
-    return Response(
-        content=html_text,
-        media_type="text/html"
-    )
+class Get_card_input(BaseModel):
+    id:str
+@app.post("/api/get_card/")
+def get_card(get_card_input:Get_card_input):
+    with global_lock:
+        if get_card_input.id not in talkings.keys(): raise HTTPException(status_code=404,detail="account not found!")
+        talking=talkings[get_card_input.id]
+        return {
+            "message":"get card successful!",
+            "data":talking.response
+            }
+
+class Get_talking_input(BaseModel):
+    name:str
+    password:str
+@app.post("/api/get_talking/")
+def get_talking(get_talking_input:Get_talking_input):
+    with global_lock:
+        if get_talking_input.name not in accounts: raise HTTPException(status_code=404,detail="account not found!")
+        if new_hash(get_talking_input.password)!=accounts[get_talking_input.name]: raise HTTPException(status_code=401,detail="wrong password!")
+        talking=Talking(str(uuid.uuid4()).replace('-', ''),responses[get_talking_input.name])
+        talkings[talking.id]=talking
+        return {
+            "message":"get talking successful!",
+            "id":talking.id,
+            }
 
 # 靜態文件服務
 app.mount("/", StaticFiles(directory="./frontend", html=True), name="frontend")
