@@ -19,18 +19,18 @@ global_lock=threading.Lock()
 #create api
 app=FastAPI()
 
-# ¶¨Áx¿ÉÔL†–µÄíÔ´(CORS)
+# å®šç¾©å¯è¨ªå•çš„ä¾†æº(CORS)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        # ÏßÉÏ»·¾³£ºÄãµÄRailwayÓòÃû
+        # çº¿ä¸Šç¯å¢ƒï¼šä½ çš„RailwayåŸŸå
         # "https://endearing-alignment.up.railway.app",
-        # ±¾µØ¿ª·¢£º³£¼ûµÄÇ°¶Ë¿ª·¢·şÎñÆ÷¶Ë¿Ú
+        # æœ¬åœ°å¼€å‘ï¼šå¸¸è§çš„å‰ç«¯å¼€å‘æœåŠ¡å™¨ç«¯å£
         "http://localhost:3000",
         "http://127.0.0.1:3000",
         "http://localhost:8080",
         "http://127.0.0.1:8080",
-        "http://localhost:5500", # Ò»Ğ©Live ServerµÄÄ¬ÈÏ¶Ë¿Ú
+        "http://localhost:5500", # ä¸€äº›Live Serverçš„é»˜è®¤ç«¯å£
         "http://127.0.0.1:5500",
         # "*"
     ],
@@ -45,19 +45,31 @@ def new_hash(s:str)->str:
 
 # accounts and passwords -> name : hashed_key
 accounts={
-    "Aici":new_hash("Donkey"),
+    "Aici":new_hash("mp042958H"),
 }
+import base64
 
 def Aici_response():
-    with open("backend/Aici/Christmas_card_picture.jpg","rb") as f:
-        image_bytes=f.read()
-        base64_str=base64.b64encode(image_bytes).decode('utf-8')
-    with open("backend/Aici/card.html","r") as f:
-        html_text=f.read().format(base64_str)
-    return Response(
-        content=html_text,
-        media_type="text/html"
+    with open("backend/Aici/favicon.svg","rb") as f:
+        favicon_b64 = base64.b64encode(f.read()).decode()
+    with open("backend/Aici/Christmas_card_picture.jpg", "rb") as f:
+        picture_b64 = base64.b64encode(f.read()).decode()
+    with open("backend/Aici/gift.svg", "rb") as f:
+        gift_b64 = base64.b64encode(f.read()).decode()
+    with open("backend/Aici/style.css", "rb") as f:
+        css_b64 = base64.b64encode(f.read()).decode()
+    with open("backend/Aici/script.js", "r",encoding="utf-8") as f:
+        script = f.read()
+    with open("backend/Aici/index.html", "r", encoding="utf-8") as f:
+        template = f.read()
+    html=template.format(
+        favicon=favicon_b64,
+        css=css_b64,
+        picture=picture_b64,
+        gift=gift_b64,
+        script=script
     )
+    return Response(content=html, media_type="text/html")
 
 responses={
     "Aici":Aici_response(),
@@ -141,6 +153,6 @@ def get_talking(get_talking_input:Get_talking_input):
             "id":talking.id,
             }
 
-# ìo‘BÎÄ¼ş·ş„Õ
+# éœæ…‹æ–‡ä»¶æœå‹™
 app.mount("/", StaticFiles(directory="./frontend", html=True), name="frontend")
 

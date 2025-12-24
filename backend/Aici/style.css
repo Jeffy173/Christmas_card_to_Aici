@@ -1,0 +1,89 @@
+.bgc0{
+    background-color:#8d0fa6;
+}
+
+.bgc1{
+    background-color:#40064b;
+}
+
+.bgc2{
+    background:linear-gradient(#8d0fa6,#40064b,#8d0fa6);
+}
+
+body{
+    width:450px;
+    height:min-content;
+}
+
+.big_box{
+    width:450px;
+    height:min-content;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:center;
+}
+
+.picture_box{
+    width:450px;
+    height:300px;
+}
+
+.gift_box{
+    width:450px;
+    height:100px;
+    display:flex;
+    flex-direction:row;
+    justify-content:flex-end;
+    align-items:center;
+}
+
+.button_box{
+    width:350px;
+    height:100px;
+    display:flex;
+    flex-direction:row;
+    justify-content:flex-start;
+    align-items:flex-end;
+}
+
+.picture{
+    width:450px;
+    height:300px;
+}
+
+.gift{
+    width:100px;
+    height:100px;
+}
+
+.text-box{
+    width:450px;
+    height:min-content;
+    font-size:18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+}
+
+p{
+    width:450px;
+    height:20px;
+    font-size:18px;
+    color:white;
+    display:flex;
+    flex-direction:row;
+    margin:10px 0px;
+}
+
+.pleft{
+    justify-content:flex-start;
+}
+
+.pright{
+    justify-content:flex-end;
+}
+
+#button{
+    color:white;
+}

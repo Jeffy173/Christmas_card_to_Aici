@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
+    <!-- 底层梯形 (边框圆角) -->
+    <polygon points="3,12 13,12 10,8 6,8" fill="#228B22" stroke="#FFFFFF" stroke-width="0.3" stroke-linejoin="round"/>
+    <!-- 中层梯形 (边框圆角) -->
+    <polygon points="5,8 11,8 9,5 7,5" fill="#2E8B57" stroke="#FFFFFF" stroke-width="0.3" stroke-linejoin="round"/>
+    <!-- 顶层三角形 (边框圆角，底部加宽) -->
+    <polygon points="6.5,5 9.5,5 8,2" fill="#3CB371" stroke="#FFFFFF" stroke-width="0.3" stroke-linejoin="round"/>
+    <!-- 树干 (边框圆角) -->
+    <rect x="7.25" y="12" width="1.5" height="3" fill="#8B4513" stroke="#FFFFFF" stroke-width="0.3" stroke-linejoin="round"/>
+    <!-- 星星 (中心右移至X≈9.2) -->
+    <polygon points="9.2,0.5 7.7,3.5 5.2,3.5 7.2,5.5 6.2,8.5 9.2,6.5 12.2,8.5 11.2,5.5 13.2,3.5 10.7,3.5" fill="#FFD700" transform="scale(0.3) translate(17.5, 4)"/>
+</svg>

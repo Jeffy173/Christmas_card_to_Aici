@@ -75,8 +75,9 @@ function get_card(){
     })
     .then(data=>{
         console.log(data);
-        const newWindow=window.open("card.html","_blank");
-        newWindow.onload=()=>newWindow.document.documentElement.innerHTML=data.data.body;
+        const blob=new Blob([data.data.body],{type:'text/html'});
+        const url=URL.createObjectURL(blob);
+        const newWindow=window.open(url, "_blank");
         update_result(d,data);
     })
     .catch(error=>{
