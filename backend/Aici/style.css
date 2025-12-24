@@ -11,13 +11,13 @@
 }
 
 body{
-    width:430px;
+    width:420px;
     height:min-content;
-    margin:10px;
+    margin:5px;
 }
 
 .big_box{
-    width:430px;
+    width:420px;
     height:min-content;
     display:flex;
     flex-direction:column;
@@ -26,12 +26,12 @@ body{
 }
 
 .picture_box{
-    width:430px;
+    width:420px;
     height:300px;
 }
 
 .gift_box{
-    width:430px;
+    width:420px;
     height:100px;
     display:flex;
     flex-direction:row;
@@ -40,7 +40,7 @@ body{
 }
 
 .button_box{
-    width:330px;
+    width:320px;
     height:100px;
     display:flex;
     flex-direction:row;
@@ -49,7 +49,7 @@ body{
 }
 
 .picture{
-    width:430px;
+    width:420px;
     height:300px;
 }
 
@@ -59,7 +59,7 @@ body{
 }
 
 .text-box{
-    width:430px;
+    width:420px;
     height:min-content;
     font-size:18px;
     display:flex;
@@ -68,7 +68,7 @@ body{
 }
 
 p{
-    width:430px;
+    width:420px;
     height:20px;
     font-size:18px;
     color:white;
